@@ -1,3 +1,42 @@
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (event) => {
+  // Prevent the mini-infobar from appearing on mobile
+  event.preventDefault();
+  // Stash the event so it can be triggered later
+  deferredPrompt = event;
+
+  // Show your custom install button
+  const installButton = document.createElement('button');
+  installButton.textContent = 'Install Herna Jaam';
+  installButton.style.cssText = 'position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background: #ff8c42; color: white; border: none; border-radius: 5px; cursor: pointer;';
+  document.body.appendChild(installButton);
+
+  installButton.addEventListener('click', () => {
+    // Show the install prompt
+    deferredPrompt.prompt();
+
+    // Wait for the user to respond to the prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      // Reset the deferred prompt variable
+      deferredPrompt = null;
+    });
+
+    // Remove the install button after prompting
+    installButton.remove();
+  });
+});
+
+// Optionally: Handle the appinstalled event
+window.addEventListener('appinstalled', () => {
+  console.log('Herna Jaam has been installed');
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   const sosButton = document.querySelector('.sos-button');
 
