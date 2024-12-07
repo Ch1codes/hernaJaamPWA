@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Herna Jaam</title>
+
+  <!-- External Stylesheets -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- Scripts -->
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script src="script1.js" defer></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          })
+          .catch((error) => {
+            console.log('ServiceWorker registration failed: ', error);
+          });
+      });
+    }
+  </script>
+  
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <span class="logo">HERNA JAAM!</span>
+      <a href="help.html"><button class="sos-button">SOS</button></a>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Calendar Section -->
+      <section class="section">
+        <h2 class="section-title">Calendar</h2>
+        <div id="calendar" class="component-box">
+          <iframe src="https://calendar.google.com/calendar/embed?height=300&wkst=1&ctz=Asia%2FKathmandu&showPrint=0&showTitle=0&showTabs=0&showCalendars=0&showTz=0&src=MGJmZWNjZTg2ZmE0NWNhOWRmYTg2YWIzZmQ3MjU1ZTBjNDM0NDM1YWJlZDZmZjQ1MzhkMzQxYzEyMjlkYTg0Y0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%238E24AA" frameborder="0" scrolling="no"></iframe>
+        </div>
+      </section>
+
+      <!-- Map Section -->
+      <section class="section">
+        <h2 class="section-title">Map</h2>
+        <div id="map" class="component-box"></div>
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script>
+          const events = [
+            { latitude: 27.67088, longitude: 85.43969, title: "Hack the Circle Finals" },
+            { latitude: 27.6710406, longitude: 85.4390523, title: "Bhatti" },
+            { latitude: 27.6713345, longitude:85.4391121, title: "Hotel" }
+          ];
+
+          function handleEventSelect(event) {
+            console.log(`Selected: ${event.title}`);
+          }
+
+          class EventMap {
+            constructor(events, onEventSelect) {
+              this.events = events;
+              this.onEventSelect = onEventSelect;
+              this.map = null;
+            }
+
+            initialize() {
+              this.map = L.map('map').setView([27.67088, 85.43969], 20);
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+              this.events.forEach(event => {
+                const marker = L.marker([event.latitude, event.longitude]).addTo(this.map).bindPopup(event.title);
+                marker.on('click', () => this.onEventSelect(event));
+              });
+            }
+          }
+
+          const eventMap = new EventMap(events, handleEventSelect);
+          eventMap.initialize();
+        </script>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <a href="ar.html"><button class="ar-button">AR</button></a>
+      <a href="details.html"><button class="details-button">Details</button></a>
+    </footer>
+  </div>
+</body>
+
+</html>
