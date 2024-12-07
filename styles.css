@@ -199,12 +199,12 @@ iframe {
   }
 
   .ar-button {
-      font-size: 0.8rem;
-      padding: 5px 10px;
+      font-size: 0.5rem;
+      padding: 4px 10px;
   }
   .details-button {
-    font-size: 0.8rem;
-    padding: 5px 10px;
+    font-size: 0.5rem;
+    padding: 4px 10px;
   }
   #map {
     height:150px;
